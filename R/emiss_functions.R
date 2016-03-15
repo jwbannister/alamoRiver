@@ -32,17 +32,18 @@ multi_read <- function(path, filenames){
 
 #' Build reference list for cardinal direction angles.
 #' 
-#' @return A named list of the 16 cardinal directions and their angle ranges.
+#' @return A list of vectors for the 16 cardinal directions. 
+#' Vector[1] = minimum angle, vector[2] = maximum angle, 
+#' vector [3] = central angle for direction.
 direction_reference <- function(){
-  angles <- seq(0, 360, 11.25)
-  angles <- c(348.75, angles)
-  cardinal_dirs <- c("N", rep("NNE", 2), rep("NE", 2), rep("ENE", 2),
- rep("E", 2), rep("ESE", 2), rep("SE", 2), rep("SSE", 2), rep("S", 2),
- rep("SSW", 2), rep("SW", 2), rep("WSW", 2), rep("W", 2), rep("WNW", 2),
- rep("NW", 2), rep("NNW", 2), "N")
-  dir_ref <- list()
+  angles <- seq(11.25, 348.75, 22.5)
+  angles <- c(-11.25, angles)
+  cardinal_dirs <- c("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S",
+                     "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
+  dir_ref <- vector(mode="list", length=length(cardinal_dirs))
   for (i in 1:length(cardinal_dirs)){
-    dir_ref <- c(dir_ref, list(c(angles[i], angles[i+1])))
+    dir_ref[i] <- list(c(angles[i], angles[i+1],
+                       mean(c(angles[i], angles[i+1]))))
   }
   names(dir_ref) <- cardinal_dirs
   dir_ref
