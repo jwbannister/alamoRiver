@@ -97,6 +97,7 @@ df_sum
 }
 
 build_average_table <- function(data){
+dir.ref <- direction_reference()
 df_tbl <- data %>% group_by(deployment, wd) %>%
   do(u_star.avg = mean(.$u_star), u_star.sd = sd(.$u_star),
      z_0.avg = mean(.$z_0), z_0.sd = sd(.$z_0), n=nrow(.)) %>% ungroup()
