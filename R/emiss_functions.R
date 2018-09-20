@@ -75,7 +75,7 @@ assign_cardinal <- function(df1, dir_column){
 
 build_hourly_lm <- function(data, von.karman){
 df_sum <- data %>% group_by(deployment, datetime) %>%
-  do(model = lm(log.h ~ v, data=.), n = nrow(.), 
+  do(model = lm(log.h ~ value, data=.), n = nrow(.), 
      num.dirs = length(unique(.$wd.named)),
      wd = unique(.$wd.named)) %>%
   ungroup()
@@ -101,6 +101,7 @@ dir.ref <- direction_reference()
 df_tbl <- data %>% group_by(deployment, wd) %>%
   do(u_star.avg = mean(.$u_star), u_star.sd = sd(.$u_star),
      z_0.avg = mean(.$z_0), z_0.sd = sd(.$z_0), n=nrow(.)) %>% ungroup()
+df_tbl$angle <- rep(NA, nrow(df_tbl))
 for (i in 1:nrow(df_tbl)){
   df_tbl$angle[i] <- dir.ref[names(dir.ref)==df_tbl$wd[i]][[1]][3]
 }
